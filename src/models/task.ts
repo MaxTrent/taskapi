@@ -1,6 +1,6 @@
 import { Sequelize, DataTypes, Model } from 'sequelize';
 
-interface TaskAttributes {
+export interface TaskAttributes {
   id: number;
   title: string;
   description?: string;
@@ -10,7 +10,7 @@ interface TaskAttributes {
   updatedAt?: Date;
 }
 
-class Task extends Model<TaskAttributes> implements TaskAttributes {
+export class Task extends Model<TaskAttributes> implements TaskAttributes {
   public id!: number;
   public title!: string;
   public description?: string;
@@ -20,7 +20,7 @@ class Task extends Model<TaskAttributes> implements TaskAttributes {
   public readonly updatedAt!: Date;
 }
 
-const configureTaskModel = (sequelize: Sequelize) => {
+export const configureTaskModel = (sequelize: Sequelize) => {
   Task.init(
     {
       id: {
@@ -54,5 +54,3 @@ const configureTaskModel = (sequelize: Sequelize) => {
   );
   return Task;
 };
-
-export { Task, configureTaskModel, TaskAttributes };

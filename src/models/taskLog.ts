@@ -1,6 +1,6 @@
 import { Sequelize, DataTypes, Model } from 'sequelize';
 
-interface TaskLogAttributes {
+export interface TaskLogAttributes {
   id: number;
   taskId: number;
   startTime: Date;
@@ -9,7 +9,7 @@ interface TaskLogAttributes {
   createdAt?: Date;
 }
 
-class TaskLog extends Model<TaskLogAttributes> implements TaskLogAttributes {
+export class TaskLog extends Model<TaskLogAttributes> implements TaskLogAttributes {
   public id!: number;
   public taskId!: number;
   public startTime!: Date;
@@ -18,7 +18,7 @@ class TaskLog extends Model<TaskLogAttributes> implements TaskLogAttributes {
   public readonly createdAt!: Date;
 }
 
-const configureTaskLogModel = (sequelize: Sequelize) => {
+export const configureTaskLogModel = (sequelize: Sequelize) => {
   TaskLog.init(
     {
       id: {
@@ -52,5 +52,3 @@ const configureTaskLogModel = (sequelize: Sequelize) => {
   );
   return TaskLog;
 };
-
-export { TaskLog, configureTaskLogModel, TaskLogAttributes };

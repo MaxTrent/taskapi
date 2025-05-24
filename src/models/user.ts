@@ -1,6 +1,6 @@
 import { Sequelize, DataTypes, Model } from 'sequelize';
 
-interface UserAttributes {
+export interface UserAttributes {
   id: number;
   email: string;
   password: string;
@@ -9,7 +9,7 @@ interface UserAttributes {
   updatedAt?: Date;
 }
 
-class User extends Model<UserAttributes> implements UserAttributes {
+export class User extends Model<UserAttributes> implements UserAttributes {
   public id!: number;
   public email!: string;
   public password!: string;
@@ -18,7 +18,7 @@ class User extends Model<UserAttributes> implements UserAttributes {
   public readonly updatedAt!: Date;
 }
 
-const configureUserModel = (sequelize: Sequelize) => {
+export const configureUserModel = (sequelize: Sequelize) => {
   User.init(
     {
       id: {
@@ -49,5 +49,3 @@ const configureUserModel = (sequelize: Sequelize) => {
   );
   return User;
 };
-
-export { User, configureUserModel, UserAttributes };

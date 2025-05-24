@@ -1,0 +1,170 @@
+{
+    "info": {
+      "name": "TaskAPI",
+      "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+      {
+        "name": "Auth",
+        "item": [
+          {
+            "name": "Register",
+            "request": {
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\"email\":\"test@example.com\",\"password\":\"password123\",\"role\":\"user\"}",
+                "options": { "raw": { "language": "json" } }
+              },
+              "url": {
+                "raw": "{{BASE_URL}}/auth/register",
+                "host": ["{{BASE_URL}}"],
+                "path": ["auth", "register"]
+              }
+            }
+          },
+          {
+            "name": "Login",
+            "request": {
+              "method": "POST",
+              "header": [],
+              "body": {
+                "mode": "raw",
+                "raw": "{\"email\":\"test@example.com\",\"password\":\"password123\"}",
+                "options": { "raw": { "language": "json" } }
+              },
+              "url": {
+                "raw": "{{BASE_URL}}/auth/login",
+                "host": ["{{BASE_URL}}"],
+                "path": ["auth", "login"]
+              }
+            }
+          }
+        ]
+      },
+      {
+        "name": "Tasks",
+        "item": [
+          {
+            "name": "Create Task",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\"title\":\"Test Task\",\"description\":\"A test task\",\"status\":\"pending\"}",
+                "options": { "raw": { "language": "json" } }
+              },
+              "url": {
+                "raw": "{{BASE_URL}}/tasks",
+                "host": ["{{BASE_URL}}"],
+                "path": ["tasks"]
+              }
+            }
+          },
+          {
+            "name": "Get Tasks",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+              ],
+              "url": {
+                "raw": "{{BASE_URL}}/tasks?status=pending&page=1&limit=10",
+                "host": ["{{BASE_URL}}"],
+                "path": ["tasks"],
+                "query": [
+                  { "key": "status", "value": "pending" },
+                  { "key": "page", "value": "1" },
+                  { "key": "limit", "value": "10" }
+                ]
+              }
+            }
+          },
+          {
+            "name": "Update Task",
+            "request": {
+              "method": "PUT",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\"title\":\"Updated Task\",\"status\":\"in-progress\"}",
+                "options": { "raw": { "language": "json" } }
+              },
+              "url": {
+                "raw": "{{BASE_URL}}/tasks/1",
+                "host": ["{{BASE_URL}}"],
+                "path": ["tasks", "1"]
+              }
+            }
+          },
+          {
+            "name": "Delete Task",
+            "request": {
+              "method": "DELETE",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+              ],
+              "url": {
+                "raw": "{{BASE_URL}}/tasks/1",
+                "host": ["{{BASE_URL}}"],
+                "path": ["tasks", "1"]
+              }
+            }
+          },
+          {
+            "name": "Track Time",
+            "request": {
+              "method": "POST",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+              ],
+              "body": {
+                "mode": "raw",
+                "raw": "{\"startTime\":\"2025-05-24T10:00:00Z\",\"endTime\":\"2025-05-24T11:00:00Z\"}",
+                "options": { "raw": { "language": "json" } }
+              },
+              "url": {
+                "raw": "{{BASE_URL}}/tasks/1/time",
+                "host": ["{{BASE_URL}}"],
+                "path": ["tasks", "1", "time"]
+              }
+            }
+          },
+          {
+            "name": "Time Report",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+              ],
+              "url": {
+                "raw": "{{BASE_URL}}/tasks/report/time",
+                "host": ["{{BASE_URL}}"],
+                "path": ["tasks", "report", "time"]
+              }
+            }
+          },
+          {
+            "name": "Completion Report",
+            "request": {
+              "method": "GET",
+              "header": [
+                { "key": "Authorization", "value": "Bearer {{TOKEN}}" }
+              ],
+              "url": {
+                "raw": "{{BASE_URL}}/tasks/report/completion",
+                "host": ["{{BASE_URL}}"],
+                "path": ["tasks", "report", "completion"]
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
