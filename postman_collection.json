@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "TaskAPI",
-    "description": "Postman collection for testing TaskAPI endpoints",
+    "description": "TaskAPI testing collection",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -9,24 +9,15 @@
       "name": "Auth",
       "item": [
         {
-          "name": "Register User (Email OTP)",
+          "name": "Register (Email OTP)",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\"email\": \"test@example.com\", \"password\": \"password123\", \"deliveryMethod\": \"email\"}"
             },
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/register",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "auth", "register"]
-            }
+            "url": "{{baseUrl}}/api/auth/register"
           },
           "response": [],
           "event": [
@@ -34,15 +25,13 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Status code is 201\", function () {",
-                  "    pm.response.to.have.status(201);",
-                  "});",
-                  "pm.test(\"Response has user details\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property(\"id\");",
-                  "    pm.expect(jsonData.email).to.equal(\"test@example.com\");",
-                  "    pm.expect(jsonData.message).to.equal(\"OTP sent\");",
-                  "    pm.environment.set(\"userId\", jsonData.id);",
+                  "pm.test(\"Status code is 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"User registered\", () => {",
+                  "  const jsonData = pm.response.json();",
+                  "  pm.expect(jsonData).to.have.property(\"id\");",
+                  "  pm.expect(jsonData.email).to.equal(\"test@example.com\");",
+                  "  pm.expect(jsonData.message).to.equal(\"OTP sent\");",
+                  "  pm.environment.set(\"userId\", jsonData.id);",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -51,24 +40,15 @@
           ]
         },
         {
-          "name": "Register User (Phone OTP)",
+          "name": "Register (Phone OTP)",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\"email\": \"test2@example.com\", \"password\": \"password123\", \"phone\": \"+2341234567890\", \"deliveryMethod\": \"phone\"}"
             },
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/register",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "auth", "register"]
-            }
+            "url": "{{baseUrl}}/api/auth/register"
           },
           "response": [],
           "event": [
@@ -76,14 +56,11 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Status code is 201\", function () {",
-                  "    pm.response.to.have.status(201);",
-                  "});",
-                  "pm.test(\"Response has user details\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property(\"id\");",
-                  "    pm.expect(jsonData.email).to.equal(\"test2@example.com\");",
-                  "    pm.expect(jsonData.message).to.equal(\"OTP sent\");",
+                  "pm.test(\"Status code is 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"User registered\", () => {",
+                  "  const jsonData = pm.response.json();",
+                  "  pm.expect(jsonData).to.have.property(\"id\");",
+                  "  pm.expect(jsonData.email).to.equal(\"test2@example.com\");",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -95,21 +72,12 @@
           "name": "Verify OTP",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\"email\": \"test@example.com\", \"otp\": \"123456\"}"
             },
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/verify-otp",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "auth", "verify-otp"]
-            }
+            "url": "{{baseUrl}}/api/auth/verify-otp"
           },
           "response": [],
           "event": [
@@ -117,13 +85,11 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});",
-                  "pm.test(\"Response has token\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property(\"token\");",
-                  "    pm.expect(jsonData.message).to.equal(\"Account verified\");",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"OTP verified\", () => {",
+                  "  const jsonData = pm.response.json();",
+                  "  pm.expect(jsonData).to.have.property(\"token\");",
+                  "  pm.expect(jsonData.message).to.equal(\"Account verified\");",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -132,24 +98,15 @@
           ]
         },
         {
-          "name": "Login User",
+          "name": "Login",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\"email\": \"test@example.com\", \"password\": \"password123\"}"
             },
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/login",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "auth", "login"]
-            }
+            "url": "{{baseUrl}}/api/auth/login"
           },
           "response": [],
           "event": [
@@ -157,13 +114,11 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});",
-                  "pm.test(\"Response has token\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property(\"token\");",
-                  "    pm.environment.set(\"token\", jsonData.token);",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Login successful\", () => {",
+                  "  const jsonData = pm.response.json();",
+                  "  pm.expect(jsonData).to.have.property(\"token\");",
+                  "  pm.environment.set(\"token\", jsonData.token);",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -175,21 +130,12 @@
           "name": "Login Admin",
           "request": {
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\"email\": \"admin@example.com\", \"password\": \"admin123\"}"
             },
-            "url": {
-              "raw": "{{baseUrl}}/api/auth/login",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "auth", "login"]
-            }
+            "url": "{{baseUrl}}/api/auth/login"
           },
           "response": [],
           "event": [
@@ -197,13 +143,11 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});",
-                  "pm.test(\"Response has token\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property(\"token\");",
-                  "    pm.environment.set(\"adminToken\", jsonData.token);",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Admin login successful\", () => {",
+                  "  const jsonData = pm.response.json();",
+                  "  pm.expect(jsonData).to.have.property(\"token\");",
+                  "  pm.environment.set(\"adminToken\", jsonData.token);",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -219,32 +163,14 @@
         {
           "name": "Create Task",
           "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\"title\": \"Test Task\", \"description\": \"Test description\", \"status\": \"pending\"}"
             },
-            "url": {
-              "raw": "{{baseUrl}}/api/tasks",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "tasks"]
-            }
+            "url": "{{baseUrl}}/api/tasks"
           },
           "response": [],
           "event": [
@@ -252,14 +178,12 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Status code is 201\", function () {",
-                  "    pm.response.to.have.status(201);",
-                  "});",
-                  "pm.test(\"Response has task details\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property(\"id\");",
-                  "    pm.expect(jsonData.title).to.equal(\"Test Task\");",
-                  "    pm.environment.set(\"taskId\", jsonData.id);",
+                  "pm.test(\"Status code is 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"Task created\", () => {",
+                  "  const jsonData = pm.response.json();",
+                  "  pm.expect(jsonData).to.have.property(\"id\");",
+                  "  pm.expect(jsonData.title).to.equal(\"Test Task\");",
+                  "  pm.environment.set(\"taskId\", jsonData.id);",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -268,18 +192,9 @@
           ]
         },
         {
-          "name": "Get All Tasks",
+          "name": "Get Tasks",
           "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
             "method": "GET",
             "header": [],
             "url": {
@@ -287,18 +202,9 @@
               "host": ["{{baseUrl}}"],
               "path": ["api", "tasks"],
               "query": [
-                {
-                  "key": "status",
-                  "value": "pending"
-                },
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "limit",
-                  "value": "10"
-                }
+                { "key": "status", "value": "pending" },
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
               ]
             }
           },
@@ -308,15 +214,13 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});",
-                  "pm.test(\"Response has tasks list\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property(\"tasks\").that.is.an(\"array\");",
-                  "    pm.expect(jsonData).to.have.property(\"total\").that.is.a(\"number\");",
-                  "    pm.expect(jsonData).to.have.property(\"page\").that.equals(1);",
-                  "    pm.expect(jsonData).to.have.property(\"limit\").that.equals(10);",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Tasks retrieved\", () => {",
+                  "  const jsonData = pm.response.json();",
+                  "  pm.expect(jsonData.tasks).to.be.an(\"array\");",
+                  "  pm.expect(jsonData.total).to.be.a(\"number\");",
+                  "  pm.expect(jsonData.page).to.equal(1);",
+                  "  pm.expect(jsonData.limit).to.equal(10);",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -327,23 +231,10 @@
         {
           "name": "Get Task by ID",
           "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/tasks/{{taskId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "tasks", "{{taskId}}"]
-            }
+            "url": "{{baseUrl}}/api/tasks/{{taskId}}"
           },
           "response": [],
           "event": [
@@ -351,13 +242,11 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});",
-                  "pm.test(\"Response has task details\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property(\"id\").that.equals(parseInt(pm.environment.get(\"taskId\")));",
-                  "    pm.expect(jsonData).to.have.property(\"title\");",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Task retrieved\", () => {",
+                  "  const jsonData = pm.response.json();",
+                  "  pm.expect(jsonData.id).to.equal(parseInt(pm.environment.get(\"taskId\")));",
+                  "  pm.expect(jsonData).to.have.property(\"title\");",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -368,32 +257,14 @@
         {
           "name": "Update Task",
           "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
             "method": "PUT",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\"title\": \"Updated Task\", \"status\": \"in-progress\"}"
             },
-            "url": {
-              "raw": "{{baseUrl}}/api/tasks/{{taskId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "tasks", "{{taskId}}"]
-            }
+            "url": "{{baseUrl}}/api/tasks/{{taskId}}"
           },
           "response": [],
           "event": [
@@ -401,13 +272,11 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});",
-                  "pm.test(\"Response has updated task\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData.title).to.equal(\"Updated Task\");",
-                  "    pm.expect(jsonData.status).to.equal(\"in-progress\");",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Task updated\", () => {",
+                  "  const jsonData = pm.response.json();",
+                  "  pm.expect(jsonData.title).to.equal(\"Updated Task\");",
+                  "  pm.expect(jsonData.status).to.equal(\"in-progress\");",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -418,23 +287,10 @@
         {
           "name": "Delete Task",
           "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
             "method": "DELETE",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/tasks/{{taskId}}",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "tasks", "{{taskId}}"]
-            }
+            "url": "{{baseUrl}}/api/tasks/{{taskId}}"
           },
           "response": [],
           "event": [
@@ -442,9 +298,7 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Status code is 204\", function () {",
-                  "    pm.response.to.have.status(204);",
-                  "});"
+                  "pm.test(\"Status code is 204\", () => pm.response.to.have.status(204));"
                 ],
                 "type": "text/javascript"
               }
@@ -459,32 +313,14 @@
         {
           "name": "Track Time",
           "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
             "method": "POST",
-            "header": [
-              {
-                "key": "Content-Type",
-                "value": "application/json"
-              }
-            ],
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
               "raw": "{\"startTime\": \"2025-05-25T12:00:00Z\", \"endTime\": \"2025-05-25T13:00:00Z\"}"
             },
-            "url": {
-              "raw": "{{baseUrl}}/api/tasks/{{taskId}}/time",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "tasks", "{{taskId}}", "time"]
-            }
+            "url": "{{baseUrl}}/api/tasks/{{taskId}}/time"
           },
           "response": [],
           "event": [
@@ -492,14 +328,11 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Status code is 201\", function () {",
-                  "    pm.response.to.have.status(201);",
-                  "});",
-                  "pm.test(\"Response has task log details\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property(\"id\");",
-                  "    pm.expect(jsonData.taskId).to.equal(parseInt(pm.environment.get(\"taskId\")));",
-                  "    pm.expect(jsonData.duration).to.equal(3600);",
+                  "pm.test(\"Status code is 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"Time logged\", () => {",
+                  "  const jsonData = pm.response.json();",
+                  "  pm.expect(jsonData.taskId).to.equal(parseInt(pm.environment.get(\"taskId\")));",
+                  "  pm.expect(jsonData.duration).to.equal(3600);",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -510,16 +343,7 @@
         {
           "name": "Get Task Logs",
           "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
             "method": "GET",
             "header": [],
             "url": {
@@ -527,14 +351,8 @@
               "host": ["{{baseUrl}}"],
               "path": ["api", "tasks", "{{taskId}}", "logs"],
               "query": [
-                {
-                  "key": "page",
-                  "value": "1"
-                },
-                {
-                  "key": "limit",
-                  "value": "10"
-                }
+                { "key": "page", "value": "1" },
+                { "key": "limit", "value": "10" }
               ]
             }
           },
@@ -544,15 +362,39 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});",
-                  "pm.test(\"Response has task logs\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property(\"logs\").that.is.an(\"array\");",
-                  "    pm.expect(jsonData).to.have.property(\"total\").that.is.a(\"number\");",
-                  "    pm.expect(jsonData).to.have.property(\"page\").that.equals(1);",
-                  "    pm.expect(jsonData).to.have.property(\"limit\").that.equals(10);",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Logs retrieved\", () => {",
+                  "  const jsonData = pm.response.json();",
+                  "  pm.expect(jsonData.logs).to.be.an(\"array\");",
+                  "  pm.expect(jsonData.total).to.be.a(\"number\");",
+                  "  pm.expect(jsonData.page).to.equal(1);",
+                  "  pm.expect(jsonData.limit).to.equal(10);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Get Total Time",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
+            "method": "GET",
+            "header": [],
+            "url": "{{baseUrl}}/api/tasks/{{taskId}}/time-total"
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Total time retrieved\", () => {",
+                  "  const jsonData = pm.response.json();",
+                  "  pm.expect(jsonData.taskId).to.equal(parseInt(pm.environment.get(\"taskId\")));",
+                  "  pm.expect(jsonData.totalTime).to.be.a(\"number\");",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -568,23 +410,10 @@
         {
           "name": "Get Time Report",
           "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{token}}",
-                  "type": "string"
-                }
-              ]
-            },
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/tasks/report/time",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "tasks", "report", "time"]
-            }
+            "url": "{{baseUrl}}/api/tasks/report/time"
           },
           "response": [],
           "event": [
@@ -592,13 +421,11 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});",
-                  "pm.test(\"Response has time report\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property(\"logs\").that.is.an(\"array\");",
-                  "    pm.expect(jsonData).to.have.property(\"totalTime\").that.is.a(\"number\");",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Time report retrieved\", () => {",
+                  "  const jsonData = pm.response.json();",
+                  "  pm.expect(jsonData.logs).to.be.an(\"array\");",
+                  "  pm.expect(jsonData.totalTime).to.be.a(\"number\");",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -609,23 +436,10 @@
         {
           "name": "Get Completion Report (Admin)",
           "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{adminToken}}",
-                  "type": "string"
-                }
-              ]
-            },
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{adminToken}}" }] },
             "method": "GET",
             "header": [],
-            "url": {
-              "raw": "{{baseUrl}}/api/tasks/report/completion",
-              "host": ["{{baseUrl}}"],
-              "path": ["api", "tasks", "report", "completion"]
-            }
+            "url": "{{baseUrl}}/api/tasks/report/completion"
           },
           "response": [],
           "event": [
@@ -633,14 +447,12 @@
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Status code is 200\", function () {",
-                  "    pm.response.to.have.status(200);",
-                  "});",
-                  "pm.test(\"Response has completion report\", function () {",
-                  "    var jsonData = pm.response.json();",
-                  "    pm.expect(jsonData).to.have.property(\"total\").that.is.a(\"number\");",
-                  "    pm.expect(jsonData).to.have.property(\"completed\").that.is.a(\"number\");",
-                  "    pm.expect(jsonData).to.have.property(\"rate\").that.is.a(\"number\");",
+                  "pm.test(\"Status code is 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"Completion report retrieved\", () => {",
+                  "  const jsonData = pm.response.json();",
+                  "  pm.expect(jsonData.total).to.be.a(\"number\");",
+                  "  pm.expect(jsonData.completed).to.be.a(\"number\");",
+                  "  pm.expect(jsonData.rate).to.be.a(\"number\");",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -651,27 +463,7 @@
       ]
     }
   ],
-  "event": [
-    {
-      "listen": "prerequest",
-      "script": {
-        "type": "text/javascript",
-        "exec": [""]
-      }
-    },
-    {
-      "listen": "test",
-      "script": {
-        "type": "text/javascript",
-        "exec": [""]
-      }
-    }
-  ],
   "variable": [
-    {
-      "key": "baseUrl",
-      "value": "http://localhost:4000",
-      "type": "string"
-    }
+    { "key": "baseUrl", "value": "http://localhost:4000", "type": "string" }
   ]
 }
