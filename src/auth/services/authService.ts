@@ -1,39 +1,75 @@
-import { User } from '../../models/user';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
-import { createLogger } from '../../utils/logger';
-import { AppError } from '../../utils/errors';
-import { RegisterInput, LoginInput } from '../schemas';
-import { config } from '../../config';
+   import jwt from 'jsonwebtoken';
+   import { User, UserCreationAttributes } from '../../models/user';
+   import { config } from '../../config';
+   import { AppError } from '../../utils/errors';
+import { NotificationService } from 'utils/notificatioService';
 
-const logger = createLogger('authService');
+   export async function registerUser(
+     email: string,
+     password: string,
+     phone: string | null,
+     deliveryMethod: 'email' | 'phone',
+     role: 'user' | 'admin' = 'user'
+   ) {
+     NotificationService.init();
+     const hashedPassword = await bcrypt.hash(password, 10);
+     const otp = NotificationService.generateOtp();
+     const userData: UserCreationAttributes = {
+       email,
+       password: hashedPassword,
+       phone: phone || undefined,
+       role,
+       otp,
+       isVerified: false,
+     };
 
-export const register = async ({ email, password, role = 'user' }: RegisterInput) => {
-  logger.info('Registering user...', { email, role });
-  const existingUser = await User.findOne({ where: { email } });
-  if (existingUser) {
-    logger.warn('User already exists', { email });
-    throw new AppError('User already exists', 400);
-  }
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const user = await User.create({ email, password: hashedPassword, role });
-  logger.info('User registered', { userId: user.id });
-  return user;
-};
+     try {
+       const user = await User.create(userData);
+       let otpSent = false;
+       if (deliveryMethod === 'email') {
+         otpSent = await NotificationService.sendOtpEmail(email, otp);
+       } else if (deliveryMethod === 'phone' && phone) {
+         otpSent = await NotificationService.sendOtpSms(phone, otp);
+       }
+       if (!otpSent) {
+         throw new AppError('Failed to send OTP', 500);
+       }
+       return user;
+     } catch (error) {
+       if (error instanceof Error && error.name === 'SequelizeUniqueConstraintError') {
+         throw new AppError('Email already exists', 400);
+       }
+       throw error;
+     }
+   }
 
-export const login = async ({ email, password }: LoginInput) => {
-  logger.info('logging in...', { email });
-  const user = await User.findOne({ where: { email } });
-  if (!user) {
-    logger.warn('User not found', { email });
-    throw new AppError('Invalid credentials', 401);
-  }
-  const isValid = await bcrypt.compare(password, user.password);
-  if (!isValid) {
-    logger.warn('Invalid password', { email });
-    throw new AppError('Invalid credentials', 401);
-  }
-  const token = jwt.sign({ id: user.id, role: user.role }, config.JWT_SECRET, { expiresIn: '1h' });
-  logger.info('Login successful', { userId: user.id });
-  return { token, user: { id: user.id, email: user.email, role: user.role } };
-};
+   export async function verifyOtp(email: string, otp: string) {
+     const user = await User.findOne({ where: { email, otp } });
+     if (!user) {
+         throw new AppError('Invalid OTP or email', 400);
+     }
+     await user.update({ isVerified: true, otp: null });
+     const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, config.JWT_SECRET, {
+       expiresIn: '1h',
+     });
+     return { user, token };
+   }
+
+   export async function loginUser(email: string, password: string) {
+     const user = await User.findOne({ where: { email } });
+     if (!user) {
+       throw new AppError('Invalid credentials', 400);
+     }
+     if (!user.isVerified) {
+       throw new AppError('Account not verified. Please verify your OTP.', 403);
+     }
+     const isPasswordValid = await bcrypt.compare(password, user.password);
+     if (!isPasswordValid) {
+       throw new AppError('Invalid credentials', 400);
+     }
+     const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, config.JWT_SECRET, {
+       expiresIn: '1h',
+     });
+     return { user, token };
+   }

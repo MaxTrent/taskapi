@@ -9,9 +9,14 @@ dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const envSchema = z.object({
 //   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+SENDGRID_API_KEY: z.string().optional(),
+FRONTEND_URL: z.string().url().optional(),
   PORT: z.string().transform((val) => parseInt(val, 10)).pipe(z.number()),
   DATABASE_URL: z.string(),
   JWT_SECRET: z.string(),
+     TWILIO_ACCOUNT_SID: z.string().optional(),
+     TWILIO_AUTH_TOKEN: z.string().optional(),
+     TWILIO_PHONE_NUMBER: z.string().optional(),
 });
 
 type EnvConfig = z.infer<typeof envSchema>;
@@ -29,6 +34,8 @@ try {
 
 export const config: EnvConfig = {
   PORT: envVars.PORT,
+  SENDGRID_API_KEY: envVars.SENDGRID_API_KEY,
   DATABASE_URL: envVars.DATABASE_URL,
   JWT_SECRET: envVars.JWT_SECRET,
+  FRONTEND_URL: envVars.FRONTEND_URL,
 };
