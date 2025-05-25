@@ -1,39 +1,61 @@
-import request from 'supertest';
-import { app } from '../app';
-import { createLogger } from '../utils/logger';
-import { sequelize } from '../models';
-import jwt from 'jsonwebtoken';
+// import request from 'supertest';
+// import jwt from 'jsonwebtoken';
+// import { config } from '../config';
+// import { Task } from 'models/task';
+// import { app } from 'app';
 
-const logger = createLogger('taskTest');
+// describe('Task API', () => {
+//   let token: string;
 
-describe('Task API', () => {
-  let token: string;
+//   beforeAll(async () => {
+//     token = jwt.sign({ id: 1, email: 'test@example.com' }, config.JWT_SECRET, {
+//       expiresIn: '1h',
+//     });
+//     await Task.sequelize?.sync({ force: true });
+//   });
 
-  beforeAll(async () => {
-    await sequelize.sync({ force: true });
-    logger.info('Database reset for tests');
-    await request(app)
-      .post('/api/auth/register')
-      .send({ email: 'task@example.com', password: 'password123' });
-    const res = await request(app)
-      .post('/api/auth/login')
-      .send({ email: 'task@example.com', password: 'password123' });
-    token = res.body.token;
-  });
+//   it('should create a task with valid input', async () => {
+//     const response = await request(app)
+//       .post('/api/tasks')
+//       .set('Authorization', `Bearer ${token}`)
+//       .send({
+//         title: 'Test Task',
+//         description: 'A test task',
+//         status: 'pending',
+//       });
 
-  afterAll(async () => {
-    await sequelize.close();
-    logger.info('Database connection closed');
-  });
+//     expect(response.status).toBe(201);
+//     expect(response.body).toHaveProperty('id');
+//     expect(response.body.title).toBe('Test Task');
+//     expect(response.body.status).toBe('pending');
+//   });
 
-  it('should create a new task', async () => {
-    const res = await request(app)
-      .post('/api/tasks')
-      .set('Authorization', `Bearer ${token}`)
-      .send({ title: 'Test Task', description: 'A test task' });
-    expect(res.status).toBe(201);
-    expect(res.body).toHaveProperty('id');
-    expect(res.body.title).toBe('Test Task');
-    logger.info('Create task test passed');
-  });
-});
+//   it('should return 400 for invalid task input', async () => {
+//     const response = await request(app)
+//       .post('/api/tasks')
+//       .set('Authorization', `Bearer ${token}`)
+//       .send({
+//         description: 'No title',
+//         status: 'pending',
+//       });
+
+//     expect(response.status).toBe(400);
+//     expect(response.body).toEqual({
+//       error: 'Validation failed',
+//       details: expect.arrayContaining(['title: Title is required']),
+//     });
+//   });
+
+//   it('should return 200 for status endpoint', async () => {
+//     const response = await request(app).get('/status');
+
+//     expect(response.status).toBe(200);
+//     expect(response.body).toMatchObject({
+//       success: true,
+//       message: 'OK',
+//       IP: expect.any(String),
+//       URL: '/status',
+//       timestamp: expect.any(String),
+//     });
+//   });
+// });

@@ -1,10 +1,10 @@
-import { User } from '../../models';
+import { User } from '../../models/user';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { createLogger } from '../../utils/logger';
 import { AppError } from '../../utils/errors';
 import { RegisterInput, LoginInput } from '../schemas';
-import { config } from 'config';
+import { config } from '../../config';
 
 const logger = createLogger('authService');
 

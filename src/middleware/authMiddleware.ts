@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { createLogger } from '../utils/logger';
 import { AppError } from '../utils/errors';
-import { config } from 'config';
+import { config } from '../config';
 
 const logger = createLogger('authMiddleware');
 

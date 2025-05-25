@@ -3,7 +3,7 @@ import { configureUserModel } from './user';
 import { configureTaskModel } from './task';
 import { configureTaskLogModel } from './taskLog';
 import { createLogger } from '../utils/logger';
-import { config } from 'config';
+import { config } from '../config';
 
 const logger = createLogger('database');
 

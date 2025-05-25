@@ -1,15 +1,19 @@
 import express from 'express';
 import { createLogger } from './utils/logger';
+import cors from 'cors';
 import { syncDatabase } from './models';
-import { errorMiddleware, registerErrorMiddleware } from 'middleware/errorMiddleware';
-import registerRoutes from 'routes';
-import { config } from 'config';
+import {registerErrorMiddleware } from './middleware/errorMiddleware';
+import registerRoutes from './routes';
+import { config } from './config';
 
 const logger = createLogger('app');
 
 export const app = express();
 
+app.use(cors());
+// app.options("*", cors());
 app.use(express.json());
+
 
 registerRoutes(app);
 registerErrorMiddleware(app);
