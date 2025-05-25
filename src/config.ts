@@ -13,6 +13,7 @@ const envSchema = z.object({
 //   NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 SENDGRID_API_KEY: z.string().optional(),
 FRONTEND_URL: z.string().url().optional(),
+SENDER_EMAIL: z.string().email().optional(),
   PORT: z.string().transform((val) => parseInt(val, 10)).pipe(z.number()),
   DATABASE_URL: z.string(),
   JWT_SECRET: z.string(),
@@ -40,4 +41,8 @@ export const config: EnvConfig = {
   DATABASE_URL: envVars.DATABASE_URL,
   JWT_SECRET: envVars.JWT_SECRET,
   FRONTEND_URL: envVars.FRONTEND_URL,
+  SENDER_EMAIL: envVars.SENDER_EMAIL,
+  TWILIO_PHONE_NUMBER: envVars.TWILIO_PHONE_NUMBER,
+  TWILIO_ACCOUNT_SID  : envVars.TWILIO_ACCOUNT_SID,
+  TWILIO_AUTH_TOKEN: envVars.TWILIO_AUTH_TOKEN,
 };

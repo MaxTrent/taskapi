@@ -28,7 +28,7 @@ export class NotificationService {
     }
     const msg = {
       to,
-      from: 'no-reply@taskapi.com', 
+      from: `${config.SENDER_EMAIL}`, 
       subject: 'TaskAPI OTP Verification',
       html: `
         <p>Your TaskAPI verification OTP is: <strong>${otp}</strong></p>
