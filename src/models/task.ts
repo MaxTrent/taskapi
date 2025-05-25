@@ -1,23 +1,21 @@
-import { Sequelize, DataTypes, Model } from 'sequelize';
+import { Sequelize, DataTypes, Model, Optional } from 'sequelize';
 
 export interface TaskAttributes {
   id: number;
+  userId: number;
+  status: 'pending' | 'in-progress' | 'completed';
   title: string;
   description?: string;
-  status: 'pending' | 'in-progress' | 'completed';
-  userId: number;
-  createdAt?: Date;
-  updatedAt?: Date;
 }
 
-export class Task extends Model<TaskAttributes> implements TaskAttributes {
+export interface TaskCreationAttributes extends Optional<TaskAttributes, 'id'> {}
+
+export class Task extends Model<TaskAttributes, TaskCreationAttributes> implements TaskAttributes {
   public id!: number;
+  public userId!: number;
+  public status!: 'pending' | 'in-progress' | 'completed';
   public title!: string;
   public description?: string;
-  public status!: 'pending' | 'in-progress' | 'completed';
-  public userId!: number;
-  public readonly createdAt!: Date;
-  public readonly updatedAt!: Date;
 }
 
 export const configureTaskModel = (sequelize: Sequelize) => {
@@ -28,22 +26,21 @@ export const configureTaskModel = (sequelize: Sequelize) => {
         autoIncrement: true,
         primaryKey: true,
       },
+      userId: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+      },
+      status: {
+        type: DataTypes.ENUM('pending', 'in-progress', 'completed'),
+        allowNull: false,
+      },
       title: {
         type: DataTypes.STRING,
         allowNull: false,
       },
       description: {
-        type: DataTypes.TEXT,
+        type: DataTypes.STRING,
         allowNull: true,
-      },
-      status: {
-        type: DataTypes.ENUM('pending', 'in-progress', 'completed'),
-        defaultValue: 'pending',
-      },
-      userId: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: { model: 'users', key: 'id' },
       },
     },
     {
