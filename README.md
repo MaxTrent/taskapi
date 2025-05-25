@@ -237,7 +237,7 @@ npm run lint
 
 Postman:
 
-Import TaskAPI.postman_collection.json.
+Import postman_collection.json.
 Set environment:{
   "baseUrl": "",
   "token": "",
@@ -246,12 +246,5 @@ Set environment:{
   "taskId": ""
 }
 
-
-Test flow:
-Register (POST /auth/register).
-Verify OTP (POST /auth/verify-otp, use 123456).
-Login (POST /auth/login, sets token).
-Create admin user, login (sets adminToken).
-Test tasks, logs, reports.
 
 
