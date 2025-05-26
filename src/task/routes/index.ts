@@ -10,6 +10,7 @@ import { Router } from 'express';
      getTimeReportHandler,
      getCompletionReportHandler,
      getTaskTimeTotalHandler,
+     createTaskCalendarEvent,
    } from '../controllers/taskController';
    import { authMiddleware } from '../../middleware/authMiddleware';
    import { roleMiddleware } from '../../middleware/roleMiddleware';
@@ -30,5 +31,6 @@ import { Router } from 'express';
    router.get('/:id/time-total', getTaskTimeTotalHandler);
    router.get('/report/time', getTimeReportHandler);
    router.get('/report/completion', roleMiddleware(['admin']), getCompletionReportHandler);
+   router.post('/:id/calendar', createTaskCalendarEvent);
 
    export default router;

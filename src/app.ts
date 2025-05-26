@@ -6,6 +6,7 @@ import {registerErrorMiddleware } from './middleware/errorMiddleware';
 import registerRoutes from './routes';
 import { config } from './config';
 import rateLimit from 'express-rate-limit';
+import path from 'path';
 
 const logger = createLogger('app');
 
@@ -22,6 +23,7 @@ app.use(limiter);
 app.use(cors());
 // app.options("*", cors());
 app.use(express.json());
+app.use(express.static(path.join(__dirname, '../public')));
 
 
 

@@ -21,6 +21,9 @@ SENDER_EMAIL: z.string().email().optional(),
      TWILIO_ACCOUNT_SID: z.string().optional(),
      TWILIO_AUTH_TOKEN: z.string().optional(),
      TWILIO_PHONE_NUMBER: z.string().optional(),
+     GOOGLE_CLIENT_ID: z.string().optional(),
+  GOOGLE_CLIENT_SECRET: z.string().optional(),
+  GOOGLE_REDIRECT_URI: z.string().url().optional(),
 });
 
 type EnvConfig = z.infer<typeof envSchema>;
@@ -46,5 +49,8 @@ export const config: EnvConfig = {
   TWILIO_PHONE_NUMBER: envVars.TWILIO_PHONE_NUMBER,
   TWILIO_ACCOUNT_SID  : envVars.TWILIO_ACCOUNT_SID,
   TWILIO_AUTH_TOKEN: envVars.TWILIO_AUTH_TOKEN,
-  DOCKER_DATABASE_URL: envVars.DOCKER_DATABASE_URL
+  DOCKER_DATABASE_URL: envVars.DOCKER_DATABASE_URL,
+  GOOGLE_CLIENT_ID: envVars.GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET: envVars.GOOGLE_CLIENT_SECRET,
+  GOOGLE_REDIRECT_URI: envVars.GOOGLE_REDIRECT_URI,
 };

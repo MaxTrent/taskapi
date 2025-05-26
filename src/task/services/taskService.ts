@@ -1,8 +1,9 @@
-import { Op } from 'sequelize';
-   import { Task, TaskLog } from '../../models';
-   import { createLogger } from '../../utils/logger';
-   import { AppError } from '../../utils/errors';
-   import { TaskCreateInput } from '../schemas';
+import { Task, TaskLog } from '../../models';
+import { createLogger } from '../../utils/logger';
+import { AppError } from '../../utils/errors';
+import { TaskCreateInput } from '../schemas';
+import { createCalendarEvent } from 'utils/googleCalendar';
+import { calendar_v3 } from '@googleapis/calendar';
 
    const logger = createLogger('taskService');
 
@@ -137,3 +138,20 @@ import { Op } from 'sequelize';
      logger.info('Completion report generated', { userId, total, completed, rate });
      return { total, completed, rate };
    };
+
+   export const createTaskCalendarEventService = async (userId: number, taskId: number, accessToken: string): Promise<calendar_v3.Schema$Event> => {
+    logger.info('Creating calendar event for task', { userId, taskId });
+    const task = await Task.findOne({ where: { id: taskId, userId } });
+    if (!task) {
+      logger.warn('Task not found', { taskId, userId });
+      throw new AppError('Task not found', 404, ['Task not found']);
+    }
+    try {
+      const event = await createCalendarEvent(accessToken, task);
+      logger.info('Calendar event created', { taskId, eventId: event.id });
+      return event;
+    } catch (error) {
+      logger.error('Failed to create calendar event', { taskId, error });
+      throw new AppError('Failed to create calendar event', 500, [(error as Error).message]);
+    }
+  };

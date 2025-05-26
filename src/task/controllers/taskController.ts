@@ -10,11 +10,13 @@ import { Request, Response } from 'express';
      getCompletionReport,
      getTaskLogs,
      getTaskTimeTotal,
+     createTaskCalendarEventService,
    } from '../services/taskService';
    import { createLogger } from '../../utils/logger';
    import { AppError } from '../../utils/errors';
    import { AuthRequest } from '../../middleware/authMiddleware';
    import { TaskCreateInput, TaskUpdateInput, TimeTrackInput } from '../schemas';
+import { createCalendarEvent } from 'utils/googleCalendar';
 
    const logger = createLogger('taskController');
 
@@ -111,3 +113,14 @@ import { Request, Response } from 'express';
      const report = await getCompletionReport(req.user!.id);
      res.status(200).json(report);
    };
+
+   export const createTaskCalendarEvent = async (req: Request<{ id: string }> & AuthRequest, res: Response) => {
+    logger.info('Handling create calendar event', { userId: req.user!.id, taskId: req.params.id });
+    const { accessToken } = req.body as { accessToken: string };
+    if (!accessToken) {
+      logger.warn('Access token missing', { userId: req.user!.id });
+      throw new AppError('Access token is required', 400, ['Access token is required']);
+    }
+    const event = await createTaskCalendarEventService(req.user!.id, parseInt(req.params.id), accessToken);
+    res.status(201).json({ success: true, event });
+  };
