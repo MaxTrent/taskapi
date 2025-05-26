@@ -5,7 +5,7 @@ import { config } from '../../config';
 import { AppError } from '../../utils/errors';
 import { RegisterInput, LoginInput, VerifyOtpInput } from '../schemas';
 import { createLogger } from '../../utils/logger';
-import { NotificationService } from 'utils/notificatioService';
+import { NotificationService } from '../../utils/notificatioService';
 
 const logger = createLogger('authService');
 

@@ -1,4 +1,29 @@
-node_modules
+# dependencies
+node_modules/
+coverage/
+dist/
+
+# logs
+logs/
+*.log
+
+# dotenv
 .env
-dist
-logs
+.env.local
+.env.*.local
+
+# database
+.docker/
+pgdata/
+docker-init/ # optional if you generate from migration files
+
+# compiled artifacts
+*.tsbuildinfo
+
+# system
+.DS_Store
+Thumbs.db
+
+# test output
+*.lcov
+*.clover

@@ -1,17 +1,19 @@
-import winston from 'winston';
+import { createLogger as createWinstonLogger, transports, format } from 'winston';
 
-export const createLogger = (context: string) => winston.createLogger({
-  level: 'info',
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.json(),
-    winston.format.metadata(),
-    winston.format.printf(({ timestamp, level, message, metadata }) => {
-      return `${timestamp} [${context}] ${level}: ${message} ${Object.keys(metadata).length ? JSON.stringify(metadata) : ''}`;
-    })
-  ),
-  transports: [
-    new winston.transports.Console(),
-    new winston.transports.File({ filename: 'logs/app.log' }),
-  ],
-});
+const { combine, timestamp, json, errors } = format;
+
+export const createLogger = (name: string) => {
+  return createWinstonLogger({
+    level: 'info',
+    format: combine(
+      errors({ stack: true }),
+      timestamp(),
+      json()
+    ),
+    defaultMeta: { service: name },
+    transports: [
+      new transports.File({ filename: `logs/${name}.log` }),
+      new transports.Console(),
+    ],
+  });
+};

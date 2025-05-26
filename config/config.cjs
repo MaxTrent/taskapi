@@ -4,13 +4,17 @@ require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') }
      development: {
        url: process.env.DATABASE_URL,
        dialect: 'postgres',
-     },
-     test: {
-       url: process.env.DATABASE_URL ? process.env.DATABASE_URL.replace('taskapi', 'taskapi_test') : '',
-       dialect: 'postgres',
+       logging: false
      },
      production: {
-       url: process.env.DATABASE_URL,
-       dialect: 'postgres',
-     },
+      url: process.env.DATABASE_URL,
+      dialect: 'postgres',
+      // dialectOptions: {
+      //   ssl: {
+      //     require: false,
+      //     rejectUnauthorized: false,
+      //   },
+      // },
+      logging: false
+    },
    };

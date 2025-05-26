@@ -2,12 +2,14 @@ import { Express, Router, Request, Response } from 'express';
 import { createLogger } from './utils/logger';
 import authRoutes from './auth/routes';
 import taskRoutes from './task/routes';
+import healthRoutes from './health';
 
 const logger = createLogger('routes');
 const appRouter = Router();
 
 appRouter.use('/auth', authRoutes);
 appRouter.use('/tasks', taskRoutes);
+appRouter.use('/health', healthRoutes);
 
 export default function registerRoutes(app: Express) {
 
