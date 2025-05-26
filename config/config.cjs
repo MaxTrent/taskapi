@@ -9,12 +9,12 @@ require('dotenv').config({ path: require('path').join(__dirname, '..', '.env') }
      production: {
       url: process.env.DATABASE_URL,
       dialect: 'postgres',
-      // dialectOptions: {
-      //   ssl: {
-      //     require: false,
-      //     rejectUnauthorized: false,
-      //   },
-      // },
+      dialectOptions: {
+        ssl: {
+          require: true,
+          rejectUnauthorized: false,
+        },
+      },
       logging: false
     },
    };
