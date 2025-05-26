@@ -2,7 +2,7 @@
 
 **TaskAPI** is a RESTful API for task management, time tracking, and productivity reporting.  
 Built with **TypeScript**, **Express**, and **Sequelize**, it enables users to create tasks, log time, and generate reports.  
-Authentication uses **JWT** with OTP sent via **email (SendGrid)** or **SMS (Twilio)**.  
+Authentication uses **JWT** with OTP sent via **email** or **SMS**.  
 > ⚠️ Email OTPs may appear in your spam/junk folder if not in your inbox.  
 > 🔗 Live API: [https://taskapi-rtc7.onrender.com](https://taskapi-rtc7.onrender.com)
 
