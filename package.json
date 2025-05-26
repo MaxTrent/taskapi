@@ -5,6 +5,7 @@
   "scripts": {
     "start": "node dist/app.js",
     "build": "tsc",
+     "build-sw": "tsc public/sw.ts --outDir public --target es2017 --module esnext --lib es2017,DOM,WebWorker",
     "dev": "nodemon --exec tsx src/app.ts",
     "lint": "eslint src/**/*.{ts,tsx}",
     "migrate": "sequelize db:migrate",

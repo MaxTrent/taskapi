@@ -14,6 +14,8 @@ Authentication uses **JWT** with OTP sent via **email (SendGrid)** or **SMS (Twi
 - **Time Tracking**: Log time per task, view logs, and calculate total time spent.
 - **Reports**: Analyze time usage and task completion rates (admin-only for completion).
 - **Authentication**: Register, verify OTP, and login with JWT.
+- **Calendar Integration**: Create Google Calendar events for tasks.
+- **Rate Limiting**: 100 requests per 15 minutes per IP address.
 - **Pagination**: Filter and paginate task and log lists.
 - **Type Safety**: Zod validation and TypeScript.
 - **Logging**: Detailed logs stored in `/logs/app.log`.
@@ -44,6 +46,7 @@ Authentication uses **JWT** with OTP sent via **email (SendGrid)** or **SMS (Twi
 - PostgreSQL (v14 or later)
 - SendGrid account (for email OTP)
 - Twilio account (for SMS OTP)
+- Google Cloud Console (for Calendar integration)
 - Git
 - npm
 - Docker (for local/containerized deployment)
@@ -168,6 +171,32 @@ npm run dev
 |--------|----------------------------------|-------------------------------------|
 | GET    | `/api/tasks/report/time`         | Time across all tasks               |
 | GET    | `/api/tasks/report/completion`   | Task completion rate (admin only)   |
+
+---
+
+### 📅 Calendar Integration
+
+| Method | Endpoint                    | Description                    |
+|--------|-----------------------------|--------------------------------|
+| POST   | `/api/tasks/:id/calendar`   | Create Google Calendar event   |
+
+#### Input:
+```json
+{
+  "accessToken": "your_google_access_token"
+}
+```
+
+- Requires OAuth2 accessToken with scope: `https://www.googleapis.com/auth/calendar.events`
+- Output: Event with ID and htmlLink
+
+---
+
+### ⚡ Rate Limiting
+
+- **Limit**: 100 requests per 15 minutes per IP address
+- **Exceeded limit response**: `429 Too Many Requests`
+- **Test**: Spam `GET /api/health` to trigger rate limiting
 
 ---
 
