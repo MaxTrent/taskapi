@@ -16,6 +16,7 @@ FRONTEND_URL: z.string().url().optional(),
 SENDER_EMAIL: z.string().email().optional(),
   PORT: z.string().transform((val) => parseInt(val, 10)).pipe(z.number()),
   DATABASE_URL: z.string(),
+  DOCKER_DATABASE_URL: z.string(),
   JWT_SECRET: z.string(),
      TWILIO_ACCOUNT_SID: z.string().optional(),
      TWILIO_AUTH_TOKEN: z.string().optional(),
@@ -45,4 +46,5 @@ export const config: EnvConfig = {
   TWILIO_PHONE_NUMBER: envVars.TWILIO_PHONE_NUMBER,
   TWILIO_ACCOUNT_SID  : envVars.TWILIO_ACCOUNT_SID,
   TWILIO_AUTH_TOKEN: envVars.TWILIO_AUTH_TOKEN,
+  DOCKER_DATABASE_URL: envVars.DOCKER_DATABASE_URL
 };

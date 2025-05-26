@@ -7,7 +7,7 @@ import { config } from '../config';
 
 const logger = createLogger('database');
 
-const sequelize = new Sequelize(config.DATABASE_URL, {
+const sequelize = new Sequelize(config.DOCKER_DATABASE_URL, {
   dialect: 'postgres',
   logging: (msg) => logger.info(msg),
 });
