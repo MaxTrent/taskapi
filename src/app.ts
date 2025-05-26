@@ -5,14 +5,26 @@ import { syncDatabase } from './models';
 import {registerErrorMiddleware } from './middleware/errorMiddleware';
 import registerRoutes from './routes';
 import { config } from './config';
+import rateLimit from 'express-rate-limit';
+import path from 'path';
 
 const logger = createLogger('app');
 
 export const app = express();
 
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 100, // Limit each IP to 100 requests
+  message: { success: false, message: 'Too many requests from this IP, please try again later.' },
+});
+
+app.use(limiter);
 app.use(cors());
 // app.options("*", cors());
 app.use(express.json());
+
+
 
 
 registerRoutes(app);

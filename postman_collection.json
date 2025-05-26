@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "TaskAPI",
-    "description": "TaskAPI testing collection for managing tasks, time tracking, and reports. OTPs are sent via email (check spam/junk folder if not received) or SMS. Use baseUrl: https://taskapi-rtc7.onrender.com",
+    "description": "TaskAPI testing collection for managing tasks, time tracking, reports, and calendar integration. OTPs are sent via email (check spam/junk folder) or SMS. Use baseUrl: https://taskapi-rtc7.onrender.com",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -228,6 +228,9 @@
                   "  pm.expect(jsonData.total).to.be.a(\"number\");",
                   "  pm.expect(jsonData.page).to.equal(1);",
                   "  pm.expect(jsonData.limit).to.equal(10);",
+                  "});",
+                  "pm.test(\"Response cached\", () => {",
+                  "  pm.expect(pm.response.headers.get('Cache-Control')).to.not.exist;",
                   "});"
                 ],
                 "type": "text/javascript"
@@ -309,6 +312,38 @@
               "script": {
                 "exec": [
                   "pm.test(\"Status code is 204\", () => pm.response.to.have.status(204));"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Create Calendar Event",
+          "request": {
+            "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "body": {
+              "mode": "raw",
+              "raw": "{\"accessToken\": \"your_google_access_token\"}"
+            },
+            "url": "{{baseUrl}}/api/tasks/{{taskId}}/calendar",
+            "description": "Create a Google Calendar event for a task. Requires Google OAuth2 access token."
+          },
+          "response": [],
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201\", () => pm.response.to.have.status(201));",
+                  "pm.test(\"Calendar event created\", () => {",
+                  "  const jsonData = pm.response.json();",
+                  "  pm.expect(jsonData.success).to.be.true;",
+                  "  pm.expect(jsonData.event).to.have.property(\"id\");",
+                  "  pm.expect(jsonData.event).to.have.property(\"htmlLink\");",
+                  "});"
                 ],
                 "type": "text/javascript"
               }
