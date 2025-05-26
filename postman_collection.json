@@ -1,7 +1,7 @@
 {
   "info": {
     "name": "TaskAPI",
-    "description": "TaskAPI testing collection",
+    "description": "TaskAPI testing collection for managing tasks, time tracking, and reports. OTPs are sent via email (check spam/junk folder if not received) or SMS. Use baseUrl: https://taskapi-rtc7.onrender.com",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "item": [
@@ -17,7 +17,8 @@
               "mode": "raw",
               "raw": "{\"email\": \"test@example.com\", \"password\": \"password123\", \"deliveryMethod\": \"email\"}"
             },
-            "url": "{{baseUrl}}/api/auth/register"
+            "url": "{{baseUrl}}/api/auth/register",
+            "description": "Register a user and send OTP via email. Check spam/junk folder if OTP email is not in inbox. Test OTP is 123456."
           },
           "response": [],
           "event": [
@@ -48,7 +49,8 @@
               "mode": "raw",
               "raw": "{\"email\": \"test2@example.com\", \"password\": \"password123\", \"phone\": \"+2341234567890\", \"deliveryMethod\": \"phone\"}"
             },
-            "url": "{{baseUrl}}/api/auth/register"
+            "url": "{{baseUrl}}/api/auth/register",
+            "description": "Register a user and send OTP via SMS."
           },
           "response": [],
           "event": [
@@ -77,7 +79,8 @@
               "mode": "raw",
               "raw": "{\"email\": \"test@example.com\", \"otp\": \"123456\"}"
             },
-            "url": "{{baseUrl}}/api/auth/verify-otp"
+            "url": "{{baseUrl}}/api/auth/verify-otp",
+            "description": "Verify OTP sent via email or SMS. For email, check spam/junk folder if not received. Test OTP is 123456."
           },
           "response": [],
           "event": [
@@ -106,7 +109,8 @@
               "mode": "raw",
               "raw": "{\"email\": \"test@example.com\", \"password\": \"password123\"}"
             },
-            "url": "{{baseUrl}}/api/auth/login"
+            "url": "{{baseUrl}}/api/auth/login",
+            "description": "Login to get JWT token."
           },
           "response": [],
           "event": [
@@ -135,7 +139,8 @@
               "mode": "raw",
               "raw": "{\"email\": \"admin@example.com\", \"password\": \"admin123\"}"
             },
-            "url": "{{baseUrl}}/api/auth/login"
+            "url": "{{baseUrl}}/api/auth/login",
+            "description": "Login as admin to get admin JWT token."
           },
           "response": [],
           "event": [
@@ -170,7 +175,8 @@
               "mode": "raw",
               "raw": "{\"title\": \"Test Task\", \"description\": \"Test description\", \"status\": \"pending\"}"
             },
-            "url": "{{baseUrl}}/api/tasks"
+            "url": "{{baseUrl}}/api/tasks",
+            "description": "Create a new task."
           },
           "response": [],
           "event": [
@@ -206,7 +212,8 @@
                 { "key": "page", "value": "1" },
                 { "key": "limit", "value": "10" }
               ]
-            }
+            },
+            "description": "List tasks with pagination and status filter."
           },
           "response": [],
           "event": [
@@ -234,7 +241,8 @@
             "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
             "method": "GET",
             "header": [],
-            "url": "{{baseUrl}}/api/tasks/{{taskId}}"
+            "url": "{{baseUrl}}/api/tasks/{{taskId}}",
+            "description": "Get a task by ID."
           },
           "response": [],
           "event": [
@@ -264,7 +272,8 @@
               "mode": "raw",
               "raw": "{\"title\": \"Updated Task\", \"status\": \"in-progress\"}"
             },
-            "url": "{{baseUrl}}/api/tasks/{{taskId}}"
+            "url": "{{baseUrl}}/api/tasks/{{taskId}}",
+            "description": "Update a task by ID."
           },
           "response": [],
           "event": [
@@ -290,7 +299,8 @@
             "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
             "method": "DELETE",
             "header": [],
-            "url": "{{baseUrl}}/api/tasks/{{taskId}}"
+            "url": "{{baseUrl}}/api/tasks/{{taskId}}",
+            "description": "Delete a task by ID."
           },
           "response": [],
           "event": [
@@ -318,9 +328,10 @@
             "header": [{ "key": "Content-Type", "value": "application/json" }],
             "body": {
               "mode": "raw",
-              "raw": "{\"startTime\": \"2025-05-25T12:00:00Z\", \"endTime\": \"2025-05-25T13:00:00Z\"}"
+              "raw": "{\"startTime\": \"2025-05-26T12:00:00Z\", \"endTime\": \"2025-05-26T13:00:00Z\"}"
             },
-            "url": "{{baseUrl}}/api/tasks/{{taskId}}/time"
+            "url": "{{baseUrl}}/api/tasks/{{taskId}}/time",
+            "description": "Log time spent on a task."
           },
           "response": [],
           "event": [
@@ -354,7 +365,8 @@
                 { "key": "page", "value": "1" },
                 { "key": "limit", "value": "10" }
               ]
-            }
+            },
+            "description": "List logs for a task with pagination."
           },
           "response": [],
           "event": [
@@ -382,7 +394,8 @@
             "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
             "method": "GET",
             "header": [],
-            "url": "{{baseUrl}}/api/tasks/{{taskId}}/time-total"
+            "url": "{{baseUrl}}/api/tasks/{{taskId}}/time-total",
+            "description": "Get total time spent on a task."
           },
           "response": [],
           "event": [
@@ -413,7 +426,8 @@
             "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{token}}" }] },
             "method": "GET",
             "header": [],
-            "url": "{{baseUrl}}/api/tasks/report/time"
+            "url": "{{baseUrl}}/api/tasks/report/time",
+            "description": "Get time report across all tasks."
           },
           "response": [],
           "event": [
@@ -439,7 +453,8 @@
             "auth": { "type": "bearer", "bearer": [{ "key": "token", "value": "{{adminToken}}" }] },
             "method": "GET",
             "header": [],
-            "url": "{{baseUrl}}/api/tasks/report/completion"
+            "url": "{{baseUrl}}/api/tasks/report/completion",
+            "description": "Get task completion rate (admin only)."
           },
           "response": [],
           "event": [
@@ -464,6 +479,6 @@
     }
   ],
   "variable": [
-    { "key": "baseUrl", "value": "http://localhost:4000", "type": "string" }
+    { "key": "baseUrl", "value": "https://taskapi-rtc7.onrender.com", "type": "string" }
   ]
 }
